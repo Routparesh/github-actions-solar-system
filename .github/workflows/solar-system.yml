@@ -89,18 +89,12 @@ jobs:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push Docker image
+      - name: Build
         uses: docker/build-push-action@v6
         with:
           context: .
           push: false
           tags: ${{ vars.DOCKERHUB_USERNAME }}/solar-system:${{ github.sha }}
-
-  Image-scan:
-    name: Image-scan
-    needs: [unit-testing, code-coverage, build]
-    runs-on: ubuntu-latest
-    steps:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.28.0
         with:
@@ -110,10 +104,9 @@ jobs:
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
-
   Docker-Push:
     name: Docker Build
-    needs: [unit-testing, code-coverage, build, Image-scan]
+    needs: [unit-testing, code-coverage, build]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
