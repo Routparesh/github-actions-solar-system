@@ -25,6 +25,12 @@ jobs:
         with:
           node-version: 20
 
+      - name: Cache NPM dependencies
+        uses: actions/cache@v4
+        with:
+          # npm cache files are stored in `~/.npm` on Linux/macOS
+          path: ~/.npm
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
       - name: Install Dependencies
         run: npm install
 
@@ -39,12 +45,6 @@ jobs:
           name: Mocha-Test-Result
           path: test-results.xml
 
-      - name: Cache NPM dependencies
-        uses: actions/cache@v4
-        with:
-          # npm cache files are stored in `~/.npm` on Linux/macOS
-          path: ~/.npm
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
   code-coverage:
     name: code-coverage
     runs-on: ubuntu-latest
