@@ -86,12 +86,14 @@ jobs:
           username: ${{ github.actor  }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Convert GitHub Actor to lowercase
+        run: echo "GH_USER=${GITHUB_ACTOR,,}" >> $GITHUB_ENV
       - name: Build
         uses: docker/build-push-action@v6
         with:
           context: .
           push: false
-          tags: ghcr.io/${{ github.actor }}/solar-system:${{ github.sha }}
+          tags: ghcr.io/$GH_USER/solar-system:${{ github.sha }}
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.28.0
         with:
