@@ -97,7 +97,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.28.0
         with:
-          image-ref: 'ghcr.io/${{ github.actor }}/solar-system:${{ github.sha }}'
+          image-ref: 'ghcr.io/${{ env.GH_USER }}/solar-system:${{ github.sha }}'
           format: 'table'
           exit-code: '1'
           ignore-unfixed: true
@@ -120,4 +120,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ vars.DOCKERHUB_USERNAME }}/solar-system:${{ github.sha }}
+          tags: ghcr.io/${{ env.GH_USER }}/solar-system:${{ github.sha }}
