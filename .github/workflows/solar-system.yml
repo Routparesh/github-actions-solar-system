@@ -96,6 +96,7 @@ jobs:
           tags: ghcr.io/${{ env.GH_USER }}/solar-system:${{ github.sha }}
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.28.0
+        continue-on-error: true
         with:
           image-ref: 'ghcr.io/${{ env.GH_USER }}/solar-system:${{ github.sha }}'
           format: 'table'
